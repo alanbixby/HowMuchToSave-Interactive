@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Much Should You Save?</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #334155;
+      --text-strong: #1b3b5c;
+      --text-sub: #475569;
+      --text-muted: #64748b;
+      --text-faint: #94a3b8;
+      --border: #cbd5e1;
+      --border-light: #e2e8f0;
+      --accent: #74a9d8;
+      --mod-bg: #fffbeb;
+      --mod-border: #fcd34d;
+      --mod-text: #b45309;
+      --mod-badge: #fef3c7;
+      --mod-input: #92400e;
+    }
+
+    .dark-mode {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text: #cbd5e1;
+      --text-strong: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      --text-faint: #475569;
+      --border: #334155;
+      --border-light: #0f172a;
+      --accent: #38bdf8;
+      --mod-bg: #422006;
+      --mod-border: #b45309;
+      --mod-text: #fcd34d;
+      --mod-badge: #78350f;
+      --mod-input: #fde68a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      padding: 32px 24px 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* HEADER */
+    #top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      margin-bottom: 24px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    #theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    #theme-toggle:hover {
+      background: var(--border-light);
+      color: var(--text-strong);
+    }
+
+    #header {
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      color: var(--text-strong);
+    }
+
+    .plus-marks {
+      color: var(--accent);
+      position: absolute;
+      top: -10px;
+      right: 10%;
+      font-size: 24px;
+      font-weight: bold;
+      opacity: 0.6;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      max-width: 800px;
+    }
+
+    .subtitle .highlight {
+      font-weight: 700;
+      color: var(--text-strong);
+    }
+
+    /* AGE INPUT */
+    #age-section {
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      color: var(--text-faint);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .age-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .age-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .age-box label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    #age-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-strong);
+      font-size: 28px;
+      font-weight: 900;
+      font-family: inherit;
+      width: 64px;
+      text-align: center;
+    }
+
+    .return-info {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .return-info span {
+      color: var(--text-strong);
+      font-weight: 700;
+    }
+
+    .return-info small {
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    /* PARAM INPUTS */
+    #assumptions {
+      margin-bottom: 32px;
+    }
+
+    .input-grid {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .input-grid+.input-grid {
+      margin-top: 12px;
+    }
+
+    .param-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-radius: 8px;
+      padding: 10px 14px;
+      flex: 1 1 140px;
+      min-width: 130px;
+    }
+
+    .param-box.is-default {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .param-box.is-modified {
+      background: var(--mod-bg);
+      border: 1px solid var(--mod-border);
+    }
+
+    .param-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .param-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .param-box.is-default .param-label {
+      color: var(--text-muted);
+    }
+
+    .param-box.is-modified .param-label {
+      color: var(--mod-text);
+    }
+
+    .modified-badge {
+      font-size: 9px;
+      background: var(--mod-badge);
+      color: var(--mod-text);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: 700;
+    }
+
+    .param-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+
+    .param-prefix {
+      color: var(--text-faint);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .param-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .param-box.is-default .param-input {
+      color: var(--text-strong);
+    }
+
+    .param-box.is-modified .param-input {
+      color: var(--mod-input);
+    }
+
+    .param-unit {
+      color: var(--text-faint);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* RATIO BOX */
+    #ratio-box {
+      display: none;
+      align-items: center;
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex: 1 1 140px;
+      min-width: 130px;
+    }
+
+    #ratio-box.visible {
+      display: flex;
+    }
+
+    .ratio-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    .ratio-value {
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .ratio-sub {
+      font-size: 10px;
+      color: var(--text-faint);
+      margin-top: 2px;
+    }
+
+    /* TABLE */
+    #table-section {
+      overflow-x: auto;
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    .y-axis-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-strong);
+      padding-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 3px;
+      min-width: 380px;
+      flex-grow: 1;
+    }
+
+    th,
+    td {
+      text-align: center;
+    }
+
+    .title-th {
+      font-size: 14px;
+      color: var(--text-strong);
+      font-weight: 700;
+      padding-bottom: 8px;
+    }
+
+    .age-header {
+      font-size: 11px;
+      padding: 0;
+      width: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    .retire-header {
+      padding: 6px 8px;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text-strong);
+      min-width: 64px;
+    }
+
+    .age-cell {
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-strong);
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .age-cell.highlighted {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--bg);
+      background: var(--text-strong);
+      border-radius: 4px;
+    }
+
+    .data-cell {
+      padding: 8px 10px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 2px;
+      min-width: 60px;
+      cursor: default;
+    }
+
+    .data-cell.invalid {
+      background: var(--border-light);
+      color: transparent;
+    }
+
+    .data-cell.highlighted-outline {
+      outline: 2px solid var(--text-strong);
+      outline-offset: 1px;
+      font-weight: 700;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* LEGEND */
+    #legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-left: 30px;
+    }
+
+    .legend-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+    }
+
+    .legend-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    /* LIMITATIONS */
+    #limitations {
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    #limitations .lim-title {
+      font-weight: 700;
+      color: var(--text-strong);
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="top-bar">
+    <div>RESOURCE</div>
+    <button id="theme-toggle">🌓 Dark Mode</button>
+  </div>
+
+  <!-- HEADER -->
+  <div id="header">
+    <div class="plus-marks">✦ ✦ ✦</div>
+    <h1>How Much Should You Save?</h1>
+    <p class="subtitle">
+      This table shows the percentage of your annual income you would need to invest to replace
+      <span class="highlight" id="replacement-display">80%</span> of your income in today's
+      dollars at your target retirement age, assuming a 3% rate of inflation, 3% wage growth, and a 4% withdrawal rate.
+    </p>
+  </div>
+
+  <!-- YOUR AGE -->
+  <div id="age-section">
+    <div class="age-row">
+      <div class="age-box">
+        <label>CURRENT AGE</label>
+        <input type="number" id="age-input" min="16" max="64" step="1" value="25" />
+      </div>
+      <div class="return-info">
+        Assumed lifetime return: <span id="return-display">9.5%</span><br>
+        <small>(10% @ 20, −0.1%/yr starting age, floor 5.5% @ 65)</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSUMPTIONS -->
+  <div id="assumptions">
+    <div class="section-label">ASSUMPTIONS</div>
+    <div class="input-grid" id="grid-top"></div>
+    <div class="input-grid" id="grid-bottom"></div>
+  </div>
+
+  <!-- TABLE -->
+  <div id="table-section">
+    <div class="y-axis-label">Current Age</div>
+    <table id="savings-table"></table>
+  </div>
+
+  <!-- LEGEND -->
+  <div id="legend">
+    <span class="legend-label">SAVINGS RATE</span>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#97c8aa"></div><span class="legend-text">≤ 25%</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#f4d78f"></div><span class="legend-text">26–50%</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#ea7f7d"></div><span class="legend-text">&gt; 50%</span>
+    </div>
+  </div>
+
+  <!-- LIMITATIONS -->
+  <div id="limitations">
+    <div class="lim-title">Methodology &amp; Notes</div>
+    <div>• Methodology: Models contributions that step up annually (matching wage growth) but are contributed evenly
+      each month. Compounds monthly at the nominal rate.</div>
+    <div>• Return rate: Single nominal rate locked in at current starting age, held constant through accumulation
+      period.</div>
+    <div>• Target: (incomeReplacement / withdrawalRate) × (1 + inflation)^n.</div>
+    <div>• Initial investment: Entered in today's dollars, divided by current salary to normalize.</div>
+    <div>• Displayed values use standard mathematical rounding to the nearest whole percentage. Values > 87.5% are
+      hidden.</div>
+  </div>
+
+  <script>
+    // ─── THEME TOGGLE ─────────────────────────────────────────────────────────────
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      themeBtn.textContent = isDark ? '☀️ Light Mode' : '🌓 Dark Mode';
+    });
+
+    // ─── CONSTANTS ────────────────────────────────────────────────────────────────
+    const RETIRE_AGES = [45, 50, 55, 60, 65];
+    const DEFAULTS = { inflation: 3, wageGrowth: 3, withdrawalRate: 4, incomeReplacement: 80 };
+
+    // ─── STATE ────────────────────────────────────────────────────────────────────
+    const state = {
+      currentAge: 25,
+      inflation: 3,
+      wageGrowth: 3,
+      withdrawalRate: 4,
+      incomeReplacement: 80,
+      currentSalary: 100000,
+      initialInvestment: 0,
+    };
+
+    // ─── CALCULATION ENGINE ───────────────────────────────────────────────────────
+    function getAnnualReturn(startingAge) {
+      return Math.max(0.055, 0.10 - 0.001 * (startingAge - 20));
+    }
+
+    function calcSavingsRate({ currentAge, retireAge, annualReturn, inflation, wageGrowth, withdrawalRate, incomeReplacement, initialInvestmentRatio }) {
+      const n = retireAge - currentAge;
+      if (n <= 0) return null;
+
+      const rM = annualReturn / 12;
+
+      // Target nest egg at retirement (Nominal)
+      const targetNominal = (incomeReplacement / withdrawalRate) * Math.pow(1 + inflation, n);
+
+      // Future value of current invested assets (compounded monthly)
+      const fvInitial = initialInvestmentRatio * Math.pow(1 + rM, n * 12);
+
+      const remainingNominal = targetNominal - fvInitial;
+      if (remainingNominal <= 0) return 0;
+
+      // FV factor of $1/mo contributed at end of each month for 12 months
+      const fvFactorMonthly = rM === 0 ? 12 : (Math.pow(1 + rM, 12) - 1) / rM;
+
+      // We are solving for the Annual Savings Rate (S). 
+      // If S=1 (100%), monthly contribution in year 1 is 1/12.
+      const fvOfYear1AtEndOfYear1 = (1 / 12) * fvFactorMonthly;
+
+      const effectiveAnnualReturn = Math.pow(1 + rM, 12) - 1;
+
+      let sum100Pct = 0;
+      for (let y = 1; y <= n; y++) {
+        // In year y, the salary has grown by wageGrowth^(y-1)
+        const salaryYr = Math.pow(1 + wageGrowth, y - 1);
+
+        const fvAtEndOfYearY = salaryYr * fvOfYear1AtEndOfYear1;
+        const yearsRemaining = n - y;
+
+        sum100Pct += fvAtEndOfYearY * Math.pow(1 + effectiveAnnualReturn, yearsRemaining);
+      }
+
+      return remainingNominal / sum100Pct;
+    }
+
+    function cellColor(roundedPct) {
+      if (roundedPct === null) return { bg: 'var(--border-light)', text: 'transparent' };
+
+      // Note: Text color is forced to dark navy (#1b3b5c) so it remains legible 
+      // against the static pastel backgrounds, even when in dark mode.
+      if (roundedPct <= 0) return { bg: '#97c8aa', text: '#1b3b5c' };
+      if (roundedPct <= 25) return { bg: '#97c8aa', text: '#1b3b5c' };
+      if (roundedPct <= 50) return { bg: '#f4d78f', text: '#1b3b5c' };
+      return { bg: '#ea7f7d', text: '#1b3b5c' };
+    }
+
+    // ─── PARAM INPUT BUILDER ──────────────────────────────────────────────────────
+    function buildParamInput({ id, label, min, max, step, defaultVal, unit, prefix }) {
+      const box = document.createElement('div');
+      box.className = 'param-box';
+      box.id = 'box-' + id;
+
+      const header = document.createElement('div');
+      header.className = 'param-header';
+
+      const lbl = document.createElement('span');
+      lbl.className = 'param-label';
+      lbl.textContent = label;
+      header.appendChild(lbl);
+
+      const badge = document.createElement('span');
+      badge.className = 'modified-badge';
+      badge.textContent = 'MODIFIED';
+      badge.id = 'badge-' + id;
+      badge.style.display = 'none';
+      header.appendChild(badge);
+      box.appendChild(header);
+
+      const valRow = document.createElement('div');
+      valRow.className = 'param-value-row';
+
+      if (prefix) {
+        const pre = document.createElement('span');
+        pre.className = 'param-prefix';
+        pre.textContent = prefix;
+        valRow.appendChild(pre);
+      }
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'param-input';
+      input.id = id;
+      input.min = min;
+      input.max = max;
+      input.step = step;
+      input.value = state[id] !== undefined ? state[id] : defaultVal;
+      valRow.appendChild(input);
+
+      if (unit) {
+        const u = document.createElement('span');
+        u.className = 'param-unit';
+        u.textContent = unit;
+        valRow.appendChild(u);
+      }
+
+      box.appendChild(valRow);
+
+      function updateStyle() {
+        const isDefault = parseFloat(input.value) === defaultVal;
+        box.className = 'param-box ' + (isDefault ? 'is-default' : 'is-modified');
+        badge.style.display = isDefault ? 'none' : 'inline';
+      }
+      updateStyle();
+
+      input.addEventListener('input', () => {
+        const val = parseFloat(input.value) || 0;
+        state[id] = val;
+        updateStyle();
+        render();
+      });
+
+      return box;
+    }
+
+    // ─── BUILD INPUTS ─────────────────────────────────────────────────────────────
+    function buildInputs() {
+      const topGrid = document.getElementById('grid-top');
+      const bottomGrid = document.getElementById('grid-bottom');
+
+      const topInputs = [
+        { id: 'inflation', label: 'Inflation', min: 0, max: 20, step: 0.1, defaultVal: 3, unit: '%', prefix: '' },
+        { id: 'wageGrowth', label: 'Wage Growth', min: 0, max: 20, step: 0.1, defaultVal: 3, unit: '%', prefix: '' },
+        { id: 'withdrawalRate', label: 'Withdrawal Rate', min: 0.5, max: 20, step: 0.1, defaultVal: 4, unit: '%', prefix: '' },
+        { id: 'incomeReplacement', label: 'Income Replacement', min: 10, max: 200, step: 1, defaultVal: 80, unit: '%', prefix: '' },
+      ];
+      const bottomInputs = [
+        { id: 'currentSalary', label: 'Current Annual Salary', min: 1, max: 10000000, step: 1000, defaultVal: 100000, unit: '', prefix: '$' },
+        { id: 'initialInvestment', label: 'Current Invested Assets (Today\'s $)', min: 0, max: 100000000, step: 1000, defaultVal: 0, unit: '', prefix: '$' },
+      ];
+
+      topInputs.forEach(cfg => topGrid.appendChild(buildParamInput(cfg)));
+      bottomInputs.forEach(cfg => bottomGrid.appendChild(buildParamInput(cfg)));
+
+      // Ratio box
+      const ratioBox = document.createElement('div');
+      ratioBox.id = 'ratio-box';
+      ratioBox.innerHTML = `
+    <div>
+      <div class="ratio-label">RATIO TO SALARY</div>
+      <div class="ratio-value" id="ratio-value">0.00×</div>
+      <div class="ratio-sub">invested / annual salary</div>
+    </div>`;
+      bottomGrid.appendChild(ratioBox);
+    }
+
+    // ─── RENDER TABLE ─────────────────────────────────────────────────────────────
+    function render() {
+      const age = Math.min(64, Math.max(16, state.currentAge));
+
+      // Dynamically shift the table rows to center the selected age
+      let minAge = age - 5;
+      if (minAge < 16) minAge = 16;
+      let maxAge = minAge + 20;
+      if (maxAge > 64) {
+        maxAge = 64;
+        minAge = Math.max(16, maxAge - 20);
+      }
+
+      const rowAges = [];
+      for (let a = minAge; a <= maxAge; a++) rowAges.push(a);
+
+      const salary = state.currentSalary > 0 ? state.currentSalary : 1;
+      const ratio = state.initialInvestment / salary;
+
+      // Update return display
+      document.getElementById('return-display').textContent = (getAnnualReturn(age) * 100).toFixed(1) + '%';
+      document.getElementById('replacement-display').textContent = state.incomeReplacement + '%';
+
+      // Update ratio box
+      const ratioBox = document.getElementById('ratio-box');
+      if (state.initialInvestment > 0 && state.currentSalary > 0) {
+        ratioBox.classList.add('visible');
+        document.getElementById('ratio-value').textContent = ratio.toFixed(2) + '×';
+      } else {
+        ratioBox.classList.remove('visible');
+      }
+
+      // Build table
+      const table = document.getElementById('savings-table');
+      table.innerHTML = '';
+
+      // Header rows
+      const thead = document.createElement('thead');
+
+      const row0 = document.createElement('tr');
+      const emptyTh = document.createElement('th');
+      row0.appendChild(emptyTh);
+      const titleTh = document.createElement('th');
+      titleTh.colSpan = RETIRE_AGES.length;
+      titleTh.className = 'title-th';
+      titleTh.textContent = 'Target Retirement Age';
+      row0.appendChild(titleTh);
+      thead.appendChild(row0);
+
+      const row1 = document.createElement('tr');
+      const ageTh = document.createElement('th');
+      ageTh.className = 'age-header';
+      ageTh.innerHTML = 'CURRENT AGE';
+      row1.appendChild(ageTh);
+      RETIRE_AGES.forEach(ra => {
+        const th = document.createElement('th');
+        th.className = 'retire-header';
+        th.textContent = ra;
+        row1.appendChild(th);
+      });
+      thead.appendChild(row1);
+      table.appendChild(thead);
+
+      // Body
+      const tbody = document.createElement('tbody');
+      rowAges.forEach(rowAge => {
+        const isHL = rowAge === age;
+        // Lock in the return rate based on the starting age in the row
+        const annualReturn = getAnnualReturn(rowAge);
+        const tr = document.createElement('tr');
+
+        const ageTd = document.createElement('td');
+        ageTd.className = 'age-cell' + (isHL ? ' highlighted' : '');
+        ageTd.textContent = rowAge;
+        tr.appendChild(ageTd);
+
+        RETIRE_AGES.forEach(retireAge => {
+          const td = document.createElement('td');
+          td.className = 'data-cell';
+          const invalid = retireAge <= rowAge;
+
+          if (invalid) {
+            td.classList.add('invalid');
+            td.textContent = '';
+            td.style.background = 'var(--border-light)';
+          } else {
+            const rate = calcSavingsRate({
+              currentAge: rowAge, retireAge, annualReturn,
+              inflation: state.inflation / 100,
+              wageGrowth: state.wageGrowth / 100,
+              withdrawalRate: state.withdrawalRate / 100,
+              incomeReplacement: state.incomeReplacement / 100,
+              initialInvestmentRatio: ratio,
+            });
+
+            const rawPct = rate !== null ? rate * 100 : null;
+
+            // Exact percentage tooltips
+            if (rawPct !== null) {
+              td.title = rawPct.toFixed(2) + '%';
+            }
+
+            // Standard mathematical rounding to the nearest whole percentage point
+            const roundedPct = rawPct !== null ? Math.round(rawPct) : null;
+
+            // Hide values greater than 87.5%
+            const hideCell = rate === null || rawPct > 87.5;
+
+            const effectiveRate = hideCell ? null : roundedPct;
+            const { bg, text } = cellColor(effectiveRate);
+
+            let display;
+            if (hideCell) {
+              display = '';
+              if (rawPct !== null) td.title = 'Rate > 87.5% (' + rawPct.toFixed(2) + '%)';
+            }
+            else if (roundedPct <= 0) display = '0%';
+            else display = roundedPct + '%';
+
+            td.style.background = bg;
+            td.style.color = text;
+            td.textContent = display;
+            if (isHL) td.classList.add('highlighted-outline');
+          }
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+    }
+
+    // ─── WIRE AGE INPUT ───────────────────────────────────────────────────────────
+    document.getElementById('age-input').addEventListener('input', e => {
+      state.currentAge = parseInt(e.target.value) || 20;
+      render();
+    });
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────────
+    buildInputs();
+    render();
+  </script>
+</body>
+
+</html>
