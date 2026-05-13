@@ -76,6 +76,47 @@
       letter-spacing: 0.05em;
     }
 
+    .pretty-link {
+      position: relative;
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .pretty-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--text-strong));
+      opacity: 0;
+      transform: scaleX(0.35);
+      transform-origin: left;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .pretty-link:hover,
+    .pretty-link:focus-visible {
+      color: var(--text-strong);
+      transform: translateY(-1px);
+    }
+
+    .pretty-link:hover::after,
+    .pretty-link:focus-visible::after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    .pretty-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 6px;
+      border-radius: 4px;
+    }
+
     #theme-toggle {
       background: none;
       border: 1px solid var(--border);
@@ -481,13 +522,34 @@
       color: var(--text-strong);
       margin-bottom: 6px;
     }
+
+    #page-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .disclosure {
+      color: var(--text-faint);
+    }
   </style>
 </head>
 
 <body>
 
   <div id="top-bar">
-    <div>RESOURCE</div>
+    <a class="pretty-link" href="https://www.youtube.com/watch?v=JHv0ISsl7K0" target="_blank"
+      rel="noopener noreferrer">RESOURCE</a>
     <button id="theme-toggle">🌓 Dark Mode</button>
   </div>
 
@@ -555,6 +617,12 @@
     <div>• Displayed values use standard mathematical rounding to the nearest whole percentage. Values > 87.5% are
       hidden.</div>
   </div>
+
+  <footer id="page-footer">
+    <a class="pretty-link" href="https://github.com/alanbixby/HowMuchToSave-Interactive/tree/master" target="_blank"
+      rel="noopener noreferrer">Source Code</a>
+    <div class="disclosure">Made using Gemini 3.1 Pro</div>
+  </footer>
 
   <script>
     // ─── THEME TOGGLE ─────────────────────────────────────────────────────────────
